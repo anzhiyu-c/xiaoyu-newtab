@@ -333,7 +333,8 @@ input:focus {
 }
 
 /* 减少移动端动画复杂度以提升性能 */
-@media (prefers-reduced-motion: reduce) {
+/* 注意：已禁用此规则，因为部分 Windows 用户可能意外关闭了系统动画设置 */
+/* @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
   *::after {
@@ -341,7 +342,7 @@ input:focus {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
-}
+} */
 
 /* 确保移动端滚动流畅 */
 .smooth-scroll {
