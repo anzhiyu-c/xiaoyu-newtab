@@ -2,7 +2,7 @@
  * @Description:
  * @Author: 安知鱼
  * @Date: 2025-11-28 15:58:52
- * @LastEditTime: 2025-11-28 16:22:21
+ * @LastEditTime: 2025-12-05 19:44:21
  * @LastEditors: 安知鱼
  */
 import { defineConfig } from "vite";
@@ -20,10 +20,6 @@ export default defineConfig(({ mode }) => {
       webExtension({
         browser,
         manifest: "manifest.json",
-        webExtConfig: {
-          // Disable automatic homepage override to avoid "Invalid value for overriding homepage url" error
-          startUrl: [],
-        },
       }),
       viteStaticCopy({
         targets: [
