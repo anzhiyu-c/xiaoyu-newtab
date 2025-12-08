@@ -81,7 +81,7 @@ const DEFAULT_WALLPAPER_URL = DEFAULT_WALLPAPERS[0];
 
 export const useWallpaperStore = defineStore("wallpaper", () => {
   const settings = ref<WallpaperSettings>({
-    type: "default",
+    type: "dynamic",
     url: null,
     localData: null,
     localImages: [],
@@ -168,6 +168,21 @@ export const useWallpaperStore = defineStore("wallpaper", () => {
     // 确保 dynamicIndex 是有效值
     if (stored.dynamicIndex === undefined || stored.dynamicIndex < 0) {
       stored.dynamicIndex = 0;
+    }
+
+    // 如果存储中没有明确的类型设置（首次使用），默认使用动态壁纸的第一张
+    // 检查是否是从 DEFAULT_WALLPAPER 继承的（即没有保存过自定义设置）
+    if (stored.type === "default") {
+      // 检查是否有其他自定义设置（如果有，说明用户之前选择过默认壁纸，保留）
+      const hasCustomSettings =
+        stored.url || stored.localData || (Array.isArray(stored.localImages) && stored.localImages.length > 0);
+      if (!hasCustomSettings) {
+        // 首次使用或没有自定义设置，设置为动态壁纸的第一张
+        stored.type = "dynamic";
+        stored.dynamicIndex = 0;
+        // 保存新的默认设置
+        await saveWallpaper({ type: "dynamic", dynamicIndex: 0 });
+      }
     }
 
     settings.value = stored;
