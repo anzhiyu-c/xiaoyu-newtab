@@ -11,8 +11,7 @@
     "build:firefox": "vite build --mode firefox",
     "build:h5": "vite build --config vite.config.h5.ts",
     "build:all": "npm run build && npm run build:firefox && npm run build:h5",
-    "package": "node scripts/package.js",
-    "package:chrome": "pnpm build && node scripts/package.js",
+    "package": "pnpm build && node scripts/package.js",
     "preview": "vite preview",
     "preview:h5": "vite preview --config vite.config.h5.ts",
     "type-check": "vue-tsc --noEmit"
