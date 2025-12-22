@@ -1,6 +1,6 @@
 {
   "name": "anheyu-newtab",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "module",
   "description": "小鱼起始页 - 一个精美且可自定义的浏览器起始页扩展",
   "scripts": {
