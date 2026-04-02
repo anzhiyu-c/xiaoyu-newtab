@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from "vue";
+import { ref, computed, watch } from "vue";
 import { Icon } from "@iconify/vue";
 import { useNotesStore } from "@/stores/notes";
 import { useSettingsStore } from "@/stores/settings";
@@ -15,16 +15,43 @@ const settingsStore = useSettingsStore();
 // 是否显示完整内容
 const showFullContent = computed(() => settingsStore.settings.showFullNote);
 
-// 获取便笺显示内容
-function getNoteDisplayContent(note: NoteItem): string {
-  if (showFullContent.value) {
-    // 完整显示，但限制最大长度
-    if (note.content.length > 200) {
-      return note.content.substring(0, 200) + "...";
-    }
-    return note.content || "空便笺";
+// marked 模块（延迟加载）
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+let markedModule: any = null;
+
+async function parseMarkdown(content: string): Promise<string> {
+  if (!markedModule) {
+    markedModule = await import("marked");
   }
-  // 预览模式：显示第一行
+  return markedModule.marked(content) as string;
+}
+
+// 每条便笺渲染后的 markdown HTML
+const markdownHtmlMap = ref<Record<string, string>>({});
+
+watch(
+  [() => notesStore.pinnedNotes, showFullContent],
+  async ([notes, full]) => {
+    if (!full) {
+      markdownHtmlMap.value = {};
+      return;
+    }
+    const map: Record<string, string> = {};
+    for (const note of notes) {
+      try {
+        const content = note.content.length > 200 ? note.content.substring(0, 200) + "..." : note.content || "空便笺";
+        map[note.id] = await parseMarkdown(content);
+      } catch {
+        map[note.id] = note.content;
+      }
+    }
+    markdownHtmlMap.value = map;
+  },
+  { immediate: true, deep: true }
+);
+
+// 获取便笺显示内容（预览模式用）
+function getNotePreviewContent(note: NoteItem): string {
   return notesStore.getNotePreview(note);
 }
 
@@ -47,7 +74,6 @@ function handleNoteClick(noteId: string) {
         v-for="note in notesStore.pinnedNotes"
         :key="note.id"
         class="pinned-note"
-        :class="{ 'pinned-note-full': showFullContent }"
         @click="handleNoteClick(note.id)"
       >
         <!-- Close button -->
@@ -57,8 +83,15 @@ function handleNoteClick(noteId: string) {
 
         <!-- Content -->
         <div class="pinned-note-content">
-          <p class="pinned-note-text" :class="{ 'pinned-note-text-full': showFullContent }">
-            {{ getNoteDisplayContent(note) }}
+          <!-- 完整模式：渲染 markdown -->
+          <div
+            v-if="showFullContent"
+            class="pinned-note-markdown markdown-preview"
+            v-html="markdownHtmlMap[note.id] || ''"
+          />
+          <!-- 预览模式：纯文本单行 -->
+          <p v-else class="pinned-note-text">
+            {{ getNotePreviewContent(note) }}
           </p>
           <span class="pinned-note-date">{{ notesStore.formatDate(note.updatedAt) }}</span>
         </div>
@@ -167,6 +200,104 @@ function handleNoteClick(noteId: string) {
   display: -webkit-box;
   -webkit-line-clamp: 6;
   -webkit-box-orient: vertical;
+}
+
+/* Markdown 渲染样式 */
+.pinned-note-markdown {
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: rgba(0, 0, 0, 0.85);
+  overflow: hidden;
+  max-height: 13.5em;
+  word-break: break-word;
+}
+
+:global(.dark) .pinned-note-markdown {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.pinned-note-markdown :deep(h1),
+.pinned-note-markdown :deep(h2),
+.pinned-note-markdown :deep(h3),
+.pinned-note-markdown :deep(h4),
+.pinned-note-markdown :deep(h5),
+.pinned-note-markdown :deep(h6) {
+  font-weight: 600;
+  margin-top: 0.5em;
+  margin-bottom: 0.25em;
+}
+
+.pinned-note-markdown :deep(h1) { font-size: 1rem; }
+.pinned-note-markdown :deep(h2) { font-size: 0.9375rem; }
+.pinned-note-markdown :deep(h3) { font-size: 0.875rem; }
+
+.pinned-note-markdown :deep(p) {
+  margin-bottom: 0.5em;
+}
+
+.pinned-note-markdown :deep(ul),
+.pinned-note-markdown :deep(ol) {
+  padding-left: 1.25em;
+  margin-bottom: 0.5em;
+}
+
+.pinned-note-markdown :deep(li) {
+  margin-bottom: 0.1em;
+}
+
+.pinned-note-markdown :deep(code) {
+  padding: 0.1em 0.3em;
+  font-size: 0.8em;
+  background-color: rgba(0, 0, 0, 0.08);
+  border-radius: 3px;
+}
+
+:global(.dark) .pinned-note-markdown :deep(code) {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.pinned-note-markdown :deep(pre) {
+  padding: 0.5em;
+  margin-bottom: 0.5em;
+  background-color: rgba(0, 0, 0, 0.06);
+  border-radius: 6px;
+  overflow-x: auto;
+}
+
+:global(.dark) .pinned-note-markdown :deep(pre) {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.pinned-note-markdown :deep(pre code) {
+  padding: 0;
+  background: transparent;
+}
+
+.pinned-note-markdown :deep(blockquote) {
+  padding-left: 0.75em;
+  margin-bottom: 0.5em;
+  border-left: 2px solid rgba(0, 0, 0, 0.3);
+  color: rgba(0, 0, 0, 0.6);
+}
+
+:global(.dark) .pinned-note-markdown :deep(blockquote) {
+  border-left-color: rgba(255, 255, 255, 0.3);
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.pinned-note-markdown :deep(a) {
+  color: rgb(var(--color-accent));
+  text-decoration: underline;
+}
+
+.pinned-note-markdown :deep(hr) {
+  margin: 0.5em 0;
+  border: none;
+  border-top: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+:global(.dark) .pinned-note-markdown :deep(hr) {
+  border-top-color: rgba(255, 255, 255, 0.15);
 }
 
 .pinned-note-date {

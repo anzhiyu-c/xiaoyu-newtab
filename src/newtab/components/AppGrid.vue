@@ -85,6 +85,11 @@ function isDefaultApp(app: AppItem): boolean {
   return !isNaN(id) && id >= 1 && id <= 10;
 }
 
+// 判断是否为内置内部应用（特殊 URL，如 #notes、#theme-toggle）
+function isInternalApp(app: AppItem): boolean {
+  return app.url.startsWith("#");
+}
+
 // 获取应用的 CSS 变量样式（用于自定义颜色）
 function getAppCssVars(app: AppItem) {
   const vars: Record<string, string> = {};
@@ -148,8 +153,8 @@ function handleAppClick(app: AppItem) {
 }
 
 function handleEdit(app: AppItem) {
-  // 禁止编辑默认应用
-  if (isDefaultApp(app)) {
+  // 禁止编辑内置内部应用（#notes、#theme-toggle 等）
+  if (isInternalApp(app)) {
     return;
   }
   editingApp.value = { ...app };
@@ -269,12 +274,12 @@ function handleContainerClick(e: MouseEvent) {
             {{ app.name }}
           </span>
 
-          <!-- Edit/Delete buttons on hover - 仅非默认应用显示 -->
-          <div v-if="!isDefaultApp(app)" class="edit-buttons" @click.stop>
+          <!-- Edit/Delete buttons on hover - 内部应用不显示编辑，默认应用不显示删除 -->
+          <div v-if="!isInternalApp(app)" class="edit-buttons" @click.stop>
             <button class="edit-btn hover:text-accent" @click="handleEdit(app)">
               <Icon icon="ri:edit-line" class="w-3 h-3 sm:w-3.5 sm:h-3.5" />
             </button>
-            <button class="edit-btn edit-btn-delete" @click="handleDelete(app)">
+            <button v-if="!isDefaultApp(app)" class="edit-btn edit-btn-delete" @click="handleDelete(app)">
               <Icon icon="ri:delete-bin-line" class="w-3 h-3 sm:w-3.5 sm:h-3.5" />
             </button>
           </div>
