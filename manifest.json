@@ -3,7 +3,7 @@
   "{{chrome}}.manifest_version": 3,
   "{{firefox}}.manifest_version": 2,
   "name": "__MSG_extName__",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "__MSG_extDescription__",
   "default_locale": "en",
   "icons": {
@@ -13,8 +13,15 @@
     "128": "icons/icon-128.png"
   },
   "{{chrome}}.permissions": ["storage", "search"],
-  "{{chrome}}.host_permissions": ["https://www.bing.com/*", "https://cn.bing.com/*"],
-  "{{firefox}}.permissions": ["storage", "https://www.bing.com/*", "https://cn.bing.com/*"],
+  "{{chrome}}.host_permissions": [
+    "https://www.bing.com/*",
+    "https://cn.bing.com/*"
+  ],
+  "{{firefox}}.permissions": [
+    "storage",
+    "https://www.bing.com/*",
+    "https://cn.bing.com/*"
+  ],
   "{{chrome}}.background": {
     "service_worker": "src/background/index.js",
     "type": "module"
