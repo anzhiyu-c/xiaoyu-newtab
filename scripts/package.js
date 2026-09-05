@@ -89,12 +89,12 @@ async function packageExtension() {
   const excludePatterns = ["node_modules", ".DS_Store", ".gz", ".br"];
 
   // 打包 Chrome 版本
-  const chromeZip = join(distDir, `anheyu-newtab-chrome-v${version}.zip`);
+  const chromeZip = join(distDir, `s1rius-newtab-chrome-v${version}.zip`);
   console.log("📦 正在打包 Chrome 版本...");
   await createZip(chromeDir, chromeZip, excludePatterns);
 
   // 打包 Edge 版本（与 Chrome 相同，但使用不同的文件名）
-  const edgeZip = join(distDir, `anheyu-newtab-edge-v${version}.zip`);
+  const edgeZip = join(distDir, `s1rius-newtab-edge-v${version}.zip`);
   console.log("📦 正在打包 Edge 版本...");
   await createZip(chromeDir, edgeZip, excludePatterns);
 

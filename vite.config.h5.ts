@@ -12,7 +12,7 @@ import { compression } from "vite-plugin-compression2";
 export default defineConfig({
   plugins: [
     vue(),
-    // 仅复制必要的资源（其他壁纸从 CDN 加载）
+    // H5 与扩展保持一致，使用构建产物中的内置壁纸。
     viteStaticCopy({
       targets: [
         {
@@ -27,11 +27,13 @@ export default defineConfig({
           src: "public/site.webmanifest",
           dest: ".",
         },
-        // 本地默认壁纸（首次加载使用，无需网络）
         {
-          src: "public/wallpaper/static/3.jpg",
-          dest: "wallpaper",
-          rename: "default.jpg",
+          src: "public/wallpaper/static/*",
+          dest: "wallpaper/static",
+        },
+        {
+          src: "public/wallpaper/dynamic/*",
+          dest: "wallpaper/dynamic",
         },
       ],
     }),
@@ -41,7 +43,7 @@ export default defineConfig({
       threshold: 1024,
     }),
   ],
-  // 禁用默认 public 目录复制（壁纸资源已迁移到云端 CDN）
+  // 资源通过 vite-plugin-static-copy 显式复制，避免重复包含 public 目录。
   publicDir: false,
   resolve: {
     alias: {

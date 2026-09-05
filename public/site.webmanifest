@@ -1,6 +1,6 @@
 {
-  "name": "小鱼起始页",
-  "short_name": "小鱼起始页",
+  "name": "s1rius标签页",
+  "short_name": "s1rius标签页",
   "description": "一个精美且高度可自定义的浏览器起始页，支持自定义壁纸、快捷应用、搜索引擎切换、深色模式等功能。",
   "start_url": "/",
   "display": "standalone",
@@ -44,7 +44,7 @@
       "sizes": "1920x1080",
       "type": "image/png",
       "form_factor": "wide",
-      "label": "小鱼起始页桌面预览"
+      "label": "s1rius标签页桌面预览"
     }
   ],
   "shortcuts": [

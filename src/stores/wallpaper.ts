@@ -26,43 +26,40 @@ interface BingWallpaperResponse {
   error?: string;
 }
 
-// 云端壁纸 CDN 基础路径
-const WALLPAPER_CDN_BASE = "https://pan.anzhiyu.site/d/anheyu/newtab/wallpaper";
+// 内置壁纸直接随扩展打包，运行时无需依赖外部 CDN。
+export const LOCAL_DEFAULT_WALLPAPER = "/wallpaper/static/3.jpg";
 
-// 本地默认壁纸（首次加载使用，无需网络）
-export const LOCAL_DEFAULT_WALLPAPER = "/wallpaper/default.jpg";
-
-// 默认静态壁纸列表（第一张是本地默认，其他从 CDN 加载）
+// 默认静态壁纸列表
 export const DEFAULT_WALLPAPERS = [
-  LOCAL_DEFAULT_WALLPAPER, // 索引 0: 本地默认壁纸 (3.jpg)
-  `${WALLPAPER_CDN_BASE}/static/1.jpg`,
-  `${WALLPAPER_CDN_BASE}/static/2.jpg`,
-  `${WALLPAPER_CDN_BASE}/static/4.jpg`,
-  `${WALLPAPER_CDN_BASE}/static/5.jpg`,
-  `${WALLPAPER_CDN_BASE}/static/6.jpg`,
-  `${WALLPAPER_CDN_BASE}/static/7.jpg`,
-  `${WALLPAPER_CDN_BASE}/static/8.jpg`,
-  `${WALLPAPER_CDN_BASE}/static/9.jpg`,
-  `${WALLPAPER_CDN_BASE}/static/10.jpg`,
-  `${WALLPAPER_CDN_BASE}/static/11.jpg`,
-  `${WALLPAPER_CDN_BASE}/static/12.jpg`,
-  `${WALLPAPER_CDN_BASE}/static/13.jpg`,
-  `${WALLPAPER_CDN_BASE}/static/14.jpg`,
-  `${WALLPAPER_CDN_BASE}/static/15.jpg`,
+  LOCAL_DEFAULT_WALLPAPER,
+  "/wallpaper/static/1.jpg",
+  "/wallpaper/static/2.jpg",
+  "/wallpaper/static/4.jpg",
+  "/wallpaper/static/5.jpg",
+  "/wallpaper/static/6.jpg",
+  "/wallpaper/static/7.jpg",
+  "/wallpaper/static/8.jpg",
+  "/wallpaper/static/9.jpg",
+  "/wallpaper/static/10.jpg",
+  "/wallpaper/static/11.jpg",
+  "/wallpaper/static/12.jpg",
+  "/wallpaper/static/13.jpg",
+  "/wallpaper/static/14.jpg",
+  "/wallpaper/static/15.jpg",
 ];
 
-// 动态壁纸列表 (云端视频)
+// 动态壁纸列表
 export const DYNAMIC_WALLPAPERS = [
-  `${WALLPAPER_CDN_BASE}/dynamic/kasumizawa-miyu-blue-archive.mp4`,
-  `${WALLPAPER_CDN_BASE}/dynamic/LiveWallpaperPC.com-Warma.mp4`,
-  `${WALLPAPER_CDN_BASE}/dynamic/xue-hu-sang-virtual-youtuber-desktop-wallpaperwaifu.com.mp4`,
+  "/wallpaper/dynamic/kasumizawa-miyu-blue-archive.mp4",
+  "/wallpaper/dynamic/LiveWallpaperPC.com-Warma.mp4",
+  "/wallpaper/dynamic/xue-hu-sang-virtual-youtuber-desktop-wallpaperwaifu.com.mp4",
 ];
 
-// 动态壁纸缩略图 (同时作为后备静态图)
+// 动态壁纸缩略图（同时作为后备静态图）
 export const DYNAMIC_WALLPAPER_THUMBNAILS = [
-  `${WALLPAPER_CDN_BASE}/dynamic/kasumizawa-miyu-blue-archive_thumb.jpg`,
-  `${WALLPAPER_CDN_BASE}/dynamic/LiveWallpaperPC.com-Warma_thumb.jpg`,
-  `${WALLPAPER_CDN_BASE}/dynamic/xue-hu-sang-virtual-youtuber-desktop-wallpaperwaifu.com_thumb.jpg`,
+  "/wallpaper/dynamic/kasumizawa-miyu-blue-archive_thumb.jpg",
+  "/wallpaper/dynamic/LiveWallpaperPC.com-Warma_thumb.jpg",
+  "/wallpaper/dynamic/xue-hu-sang-virtual-youtuber-desktop-wallpaperwaifu.com_thumb.jpg",
 ];
 
 // 获取动态壁纸的后备静态图

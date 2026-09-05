@@ -1,8 +1,8 @@
 {
-  "name": "anheyu-newtab",
+  "name": "s1rius-newtab",
   "version": "1.0.3",
   "type": "module",
-  "description": "小鱼起始页 - 一个精美且可自定义的浏览器起始页扩展",
+  "description": "s1rius标签页 - 一个精美且可自定义的浏览器起始页扩展",
   "scripts": {
     "dev": "vite dev",
     "dev:firefox": "vite dev --mode firefox",

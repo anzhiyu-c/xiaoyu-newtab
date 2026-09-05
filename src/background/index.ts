@@ -54,4 +54,4 @@ async function fetchBingWallpaper(): Promise<BingWallpaperData> {
 }
 
 // Log when the service worker starts
-console.log("小鱼起始页 background service worker started");
+console.log("s1rius标签页 background service worker started");

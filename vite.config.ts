@@ -22,7 +22,7 @@ export default defineConfig(({ mode }) => {
         browser,
         manifest: "manifest.json",
       }),
-      // 仅复制必要的资源（其他壁纸从 CDN 加载）
+      // 扩展需要将内置壁纸一并打包，避免运行时依赖外部 CDN。
       viteStaticCopy({
         targets: [
           {
@@ -38,11 +38,14 @@ export default defineConfig(({ mode }) => {
             src: "public/site.webmanifest",
             dest: ".",
           },
-          // 本地默认壁纸（首次加载使用，无需网络）
+          // 复制全部内置静态和动态壁纸。
           {
-            src: "public/wallpaper/static/3.jpg",
-            dest: "wallpaper",
-            rename: "default.jpg",
+            src: "public/wallpaper/static/*",
+            dest: "wallpaper/static",
+          },
+          {
+            src: "public/wallpaper/dynamic/*",
+            dest: "wallpaper/dynamic",
           },
           // 复制多语言文件
           {
@@ -57,7 +60,7 @@ export default defineConfig(({ mode }) => {
         threshold: 1024, // 只压缩大于 1KB 的文件
       }),
     ],
-    // 禁用默认 public 目录复制（壁纸资源已迁移到云端 CDN）
+    // 资源通过 vite-plugin-static-copy 显式复制，避免重复包含 public 目录。
     publicDir: false,
     resolve: {
       alias: {

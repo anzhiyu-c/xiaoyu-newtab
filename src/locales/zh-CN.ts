@@ -94,15 +94,15 @@ export default {
 
     // 初始化分类
     initialization: "初始化",
-    autoFocusSearch: "小鱼起始页加载时自动聚焦到搜索栏",
-    autoShowAppGrid: "小鱼起始页加载时自动显示二级界面",
+    autoFocusSearch: "s1rius标签页加载时自动聚焦到搜索栏",
+    autoShowAppGrid: "s1rius标签页加载时自动显示二级界面",
     showGreeting: "登录后显示问候",
     username: "用户名",
     usernamePlaceholder: "设置你的用户名",
 
     // 控制提示
     extensionControlled: "由扩展控制",
-    extensionHint: "请前往小鱼起始页扩展的设置中更改此选项。",
+    extensionHint: "请前往s1rius标签页扩展的设置中更改此选项。",
     hint: "提示",
     ok: "好的",
 
@@ -212,7 +212,7 @@ export default {
   // 关于
   about: {
     title: "关于",
-    appName: "小鱼起始页",
+    appName: "s1rius标签页",
     version: "版本",
     description: "一个简洁、美观、可定制的浏览器起始页。",
     github: "GitHub",
